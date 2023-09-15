@@ -130,11 +130,7 @@
 	border-right: 5px solid#818181;
 	border-radius: 5px;
 	background-color: #818181;
-	transition: 0.2s linear;
-}
-.color-picker:focus,
-.color-picker:hover {
-	transform: scale(1.1);
+	outline: none;
 }
 
 .workspace {
@@ -148,21 +144,12 @@
 	align-items: center;
 }
 
-.rectangle-container,
-.triangle-container {
-	margin: 10px;
-	border: 2px dashed transparent; /* Начальная прозрачная рамка */
-}
-
-.rectangle-container.selected,
-.triangle-container.selected {
-	border: 2px dashed #2f80ed;
-}
 .newRectangle {
-	width: 200px;
-	height: 120px;
+	min-width: 200px;
+	min-height: 120px;
 	background-color: #353535;
 	margin: 10px;
+	border: 2px dashed transparent;
 }
 
 .newRectangle:hover,
@@ -173,8 +160,19 @@
 .newTriangle {
 	width: 0px;
 	height: 0px;
-	border-left: 80px solid transparent;
-	border-right: 80px solid transparent;
-	border-bottom: 100px solid #353535;
+	border-left: 90px solid transparent;
+	border-right: 90px solid transparent;
+	border-bottom: 120px solid #353535;
+}
+
+.newRectangle.selected {
+	border: 2px dashed #2f80ed;
+}
+
+.triangleContainer {
+	border: 2px solid transparent;
 	margin: 10px;
+}
+.triangleContainer.selected {
+	border: 2px dashed #2f80ed;
 }
