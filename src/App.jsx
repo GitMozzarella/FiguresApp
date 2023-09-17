@@ -1,48 +1,67 @@
-import React, { useState } from 'react'
-import './App.css'
-import AppMenu from './components/AppMenu'
-import Workspace from './components/Workspace'
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import AppMenu from './components/AppMenu';
+import Workspace from './components/Workspace';
 
 function App() {
-	const [rectangles, setRectangles] = useState([])
-	const [triangles, setTriangles] = useState([])
-	const [selectedRectangle, setSelectedRectangle] = useState(-1)
-	const [selectedTriangle, setSelectedTriangle] = useState(-1)
+    const initialFigures = JSON.parse(localStorage.getItem('figures'));
+    const [selectedFigures, setSelectedFigures] = useState(null);
 
-	const addRectangle = () => {
-		setRectangles([...rectangles, rectangles.length])
-	}
+    const [figures, setFigures] = useState(
+        initialFigures ? initialFigures : [],
+    );
 
-	const addTriangle = () => {
-		setTriangles([...triangles, triangles.length])
-	}
+    const [fillColor, setFillColor] = useState('#353535');
+    const addFigures = (type) => {
+        setFigures([
+            ...figures,
+            { type, id: figures.length, color: '#353535', x: 0, y: 0 },
+        ]);
+        setSelectedFigures(figures.length);
+    };
 
-	const handleRectangleClick = id => {
-		setSelectedRectangle(id)
-		setSelectedTriangle(null)
-	}
-	const handleTriangleClick = id => {
-		setSelectedTriangle(id)
-		setSelectedRectangle(null)
-	}
+    const handleFiguresClick = (id) => {
+        setSelectedFigures(id);
+    };
 
-	return (
-		<div className='App'>
-			<div className='container'>
-				<div className='wrapper'>
-					<AppMenu addRectangle={addRectangle} addTriangle={addTriangle} />
-					<Workspace
-						rectangles={rectangles}
-						triangles={triangles}
-						selectedRectangle={selectedRectangle}
-						selectedTriangle={selectedTriangle}
-						onRectangleClick={handleRectangleClick}
-						onTriangleClick={handleTriangleClick}
-					/>
-				</div>
-			</div>
-		</div>
-	)
+    useEffect(() => {
+        if (fillColor === figures[selectedFigures]?.color) return;
+        setFillColor(figures[selectedFigures]?.color);
+    }, [selectedFigures]);
+
+    useEffect(() => {
+        setFigures((figures) => {
+            return figures.map((figure) => {
+                if (figure.id === selectedFigures) {
+                    return { ...figure, color: fillColor };
+                }
+                return figure;
+            });
+        });
+    }, [fillColor, setFillColor]);
+
+    useEffect(() => {
+        localStorage.setItem('figures', JSON.stringify(figures));
+    }, [figures]);
+
+    return (
+        <div className="App">
+            <div className="container">
+                <div className="wrapper">
+                    <AppMenu
+                        addFigures={addFigures}
+                        fillColor={fillColor}
+                        setFillColor={setFillColor}
+                    />
+                    <Workspace
+                        figures={figures}
+                        handleFiguresClick={handleFiguresClick}
+                        selectedFigures={selectedFigures}
+                    />
+                </div>
+            </div>
+        </div>
+    );
 }
 
-export default App
+export default App;

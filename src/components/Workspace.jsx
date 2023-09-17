@@ -1,38 +1,39 @@
-import React from 'react'
+import React from 'react';
 
-const Workspace = ({
-	rectangles,
-	triangles,
-	selectedRectangle,
-	selectedTriangle,
-	onRectangleClick,
-	onTriangleClick
-}) => {
-	return (
-		<div className='workspace'>
-			{rectangles.map((_, id) => (
-				<div
-					key={id}
-					className={`newRectangle ${
-						selectedRectangle === id ? 'selected' : ''
-					}`}
-					onClick={() => onRectangleClick(id)}
-				></div>
-			))}
+const Workspace = ({ figures, selectedFigures, handleFiguresClick }) => {
+    return (
+        <div className="workspace">
+            {figures.map((figure, id) => {
+                if (figure.type === 0) {
+                    return (
+                        <div
+                            style={{ backgroundColor: figure.color }}
+                            key={id}
+                            className={`newRectangle ${
+                                selectedFigures === id ? 'selected' : ''
+                            }`}
+                            onClick={() => handleFiguresClick(id)}
+                        ></div>
+                    );
+                } else {
+                    return (
+                        <div
+                            key={id}
+                            className={`triangleContainer ${
+                                selectedFigures === id ? 'selected' : ''
+                            }`}
+                            onClick={() => handleFiguresClick(id)}
+                        >
+                            <div
+                                className="newTriangle"
+                                style={{ borderBottomColor: figure.color }}
+                            ></div>
+                        </div>
+                    );
+                }
+            })}
+        </div>
+    );
+};
 
-			{triangles.map((_, id) => (
-				<div
-					key={id}
-					className={`triangleContainer ${
-						selectedTriangle === id ? 'selected' : ''
-					}`}
-					onClick={() => onTriangleClick(id)}
-				>
-					<div className='newTriangle'></div>
-				</div>
-			))}
-		</div>
-	)
-}
-
-export default Workspace
+export default Workspace;
