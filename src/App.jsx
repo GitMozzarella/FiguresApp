@@ -4,64 +4,69 @@ import AppMenu from './components/AppMenu';
 import Workspace from './components/Workspace';
 
 function App() {
-    const initialFigures = JSON.parse(localStorage.getItem('figures'));
-    const [selectedFigures, setSelectedFigures] = useState(null);
+  const itemLC = 'figures';
+  const initialColor = '#353535';
+  const initialFigures = JSON.parse(localStorage.getItem(itemLC));
 
-    const [figures, setFigures] = useState(
-        initialFigures ? initialFigures : [],
+  const [selectedFigures, setSelectedFigures] = useState(null);
+  const [figures, setFigures] = useState(
+    Array.isArray(initialFigures) ? initialFigures : [],
+  );
+  const [fillColor, setFillColor] = useState(initialColor);
+
+  const addFigures = (type) => {
+    const generateId = Date.now() + Math.round(Math.random() * 1000);
+    setFigures((figures) => [
+      ...figures,
+      { type, id: generateId, color: initialColor, x: 0, y: 0 },
+    ]);
+    setSelectedFigures(generateId);
+  };
+  const deleteFigure = () => {
+    selectedFigures !== null
+      ? setFigures((figures) => figures.filter((x) => x.id !== selectedFigures))
+      : null;
+    setSelectedFigures(null);
+  };
+
+  useEffect(() => {
+    const findId = figures.find((x) => x.id === selectedFigures);
+    fillColor === findId?.color ? null : setFillColor(findId?.color);
+  }, [selectedFigures]);
+
+  useEffect(() => {
+    setFigures((figures) =>
+      figures.map((x) =>
+        x.id === selectedFigures ? { ...x, color: fillColor } : x,
+      ),
     );
+  }, [fillColor, setFillColor]);
 
-    const [fillColor, setFillColor] = useState('#353535');
-    const addFigures = (type) => {
-        setFigures([
-            ...figures,
-            { type, id: figures.length, color: '#353535', x: 0, y: 0 },
-        ]);
-        setSelectedFigures(figures.length);
-    };
+  useEffect(() => {
+    localStorage.setItem(itemLC, JSON.stringify(figures));
+  }, [figures]);
 
-    const handleFiguresClick = (id) => {
-        setSelectedFigures(id);
-    };
-
-    useEffect(() => {
-        if (fillColor === figures[selectedFigures]?.color) return;
-        setFillColor(figures[selectedFigures]?.color);
-    }, [selectedFigures]);
-
-    useEffect(() => {
-        setFigures((figures) => {
-            return figures.map((figure) => {
-                if (figure.id === selectedFigures) {
-                    return { ...figure, color: fillColor };
-                }
-                return figure;
-            });
-        });
-    }, [fillColor, setFillColor]);
-
-    useEffect(() => {
-        localStorage.setItem('figures', JSON.stringify(figures));
-    }, [figures]);
-
-    return (
-        <div className="App">
-            <div className="container">
-                <div className="wrapper">
-                    <AppMenu
-                        addFigures={addFigures}
-                        fillColor={fillColor}
-                        setFillColor={setFillColor}
-                    />
-                    <Workspace
-                        figures={figures}
-                        handleFiguresClick={handleFiguresClick}
-                        selectedFigures={selectedFigures}
-                    />
-                </div>
-            </div>
+  return (
+    <div className="App">
+      <div className="container">
+        <div className="wrapper">
+          <AppMenu
+            figures={figures}
+            addFigures={addFigures}
+            fillColor={fillColor}
+            setFillColor={setFillColor}
+            selectedFigures={selectedFigures}
+          />
+          <Workspace
+            figures={figures}
+            setSelectedFigures={setSelectedFigures}
+            selectedFigures={selectedFigures}
+            deleteFigure={deleteFigure}
+          />
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default App;
