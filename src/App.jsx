@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import AppMenu from './components/AppMenu';
 import Workspace from './components/Workspace';
+//1. импорты от констат лучше отдельять пробелом.
+//2. Если константа не используется в других файлах, экспорт не нужен
+//3. Форматирование внутри файла (отступы, лишние пустые строки)
 export const initialColor = '#353535';
 
 
