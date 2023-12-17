@@ -12,6 +12,8 @@ const AppMenu = ({
   const triangle = 1;
   const isDisabled = figures.length === 0;
 
+
+  //Лишняя обёртка в triangleblock. 2) rectangle нужно оформить в самозакрывающемся виде
   return (
     <div className="app-menu">
       <div className="shapes">

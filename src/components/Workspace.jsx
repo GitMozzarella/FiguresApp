@@ -10,7 +10,9 @@ const Workspace = ({
 }) => {
   const workspaceRef = useRef(null);
 
-
+  //1. Поехало форматирование во всём файле (отступы, пустые строки, console.log-и)
+  //2. Эту функциия не используется за пределами useEffect, лучше её поместить внутрь. Аналогично с эффектом ниже.
+  // Если бы было больше логики, то такие эффекти получилось бы без проблем вынести в отдельный хук, аля useWorkspaceEffects() для удобства чтения
   const figuresOutsideClick = (e) => {
 	const isClickOutside = e.target.classList.contains('workspace');
 

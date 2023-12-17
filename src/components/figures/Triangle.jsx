@@ -68,6 +68,7 @@ const Triangle = ({
     localStorage.setItem(`triangle_${id}_position`, JSON.stringify(position));
   }, [position, id]);
 
+  //Внутренний тег можно оформить в виде самозакрывающегося
   return (
     <div
       style={{
