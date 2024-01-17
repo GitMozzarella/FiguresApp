@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import AppMenu from './components/AppMenu';
 import Workspace from './components/Workspace';
-//1. импорты от констат лучше отдельять пробелом.
-//2. Если константа не используется в других файлах, экспорт не нужен
-//3. Форматирование внутри файла (отступы, лишние пустые строки)
-export const initialColor = '#353535';
-
 
 function App() {
-	
-
+  const initialColor = '#353535';
   const itemLC = 'figures';
   const initialFigures = JSON.parse(localStorage.getItem(itemLC));
 
@@ -28,6 +22,7 @@ function App() {
     ]);
     setSelectedFigures(generateId);
   };
+
   const deleteFigure = () => {
     selectedFigures !== null
       ? setFigures((figures) => figures.filter((x) => x.id !== selectedFigures))
@@ -62,14 +57,14 @@ function App() {
             fillColor={fillColor}
             setFillColor={setFillColor}
             selectedFigures={selectedFigures}
-				initialColor={initialColor}
+            initialColor={initialColor}
           />
           <Workspace
             figures={figures}
             setSelectedFigures={setSelectedFigures}
             selectedFigures={selectedFigures}
             deleteFigure={deleteFigure}
-				setFigures={  setFigures}
+            setFigures={setFigures}
           />
         </div>
       </div>
